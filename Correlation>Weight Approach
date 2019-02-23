@@ -1,0 +1,46 @@
+import pandas as pd
+import numpy as np
+import math as ma
+
+
+df = pd.read_csv("NewdayPortfolio.csv",parse_dates=True, index_col=0)
+print('Data Frame Shape', df.shape) #get ddata
+
+df.dropna(how='any',inplace=True)
+print('Data Frame Shape',df.shape)#reframe data
+df
+
+t=df.values #make a return matrix
+returns=t
+for i in range(1,1106):
+ returns[i,:]=(t[i,:]-t[i-1,:])/t[i-1,:]
+ 
+ means=returns.mean(axis=0)
+stds=returns.std(axis=0) #put the mean and stds in new vectors
+
+newmatrix=returns-means #Create a matrix where eacch element is the original element minus the mean
+
+correl=df.values #create the matrix that will get correlations
+
+array=newmatrix
+
+for i in range(0,41): #calculate all correlations
+    
+ for j in range(0,41):  
+    correl[i,j]=(array[:,i]*array[:,j]).sum()/(1105*stds[i]*stds[j])
+
+benchmarkcorrel=correl[5,:] #get the correlation between benchmark and all stock in one index, becnhmark is columb 6
+benchmarkcorrel[0:5]
+
+benchmarkuncorrel=1/benchmarkcorrel #Changing correlation to uncorrelation and normalizing
+benchmarkuncorrel=benchmarkuncorrel/benchmarkuncorrel.sum()
+
+for i in range(0,41):
+ if benchmarkuncorrel[i]<=0 : #Long only version
+    benchmarkuncorrel[i]=0
+    
+returns=np.delete(returns,5,1)
+newdf=df.drop("ACWI",axis=1) #Remove the index of the df
+
+weights=benchmarkuncorrel
+weights=np.delete(weights,5) #Create weights depending on the uncorrelation
