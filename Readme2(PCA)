@@ -1,0 +1,18 @@
+In the PCA approach, which was mainly developed by my friend Gustavo Trigos, we use the S&P500 historical data. 
+
+From daily returns, we find a correlation matrix that contains the correlations between each stock and all the others. 
+
+From these correlations, we find eigen vectors. There are as many eigenvectors as there are stocks in the S&P500. 
+These eigen vectors are mathematically creating a basis, a frame of reference. 
+Each eigenvector has a corresponding eigenvalue that indicate us how good is that eigenvector in representing the data,
+mathematically how much variance is explained by that vector. 
+
+One can see eigenvectors as directions. 
+The direction that represents the most data is therefore the direction or trend followed by most stocks. 
+That eigenvector is the one with the highest eigenvalue (the most representative of our data). 
+
+By using eigenvectors with low eigenvalues, we chose a direction that our market (S&P500) DOESN'T follow. 
+The logic is that these eigenvectors are axis that we will use to represent our data, 
+and that these axis don't explain most of our variance, therefore don't represent our market well. 
+
+Following these directions means following directions uncorrelated to the market. 
